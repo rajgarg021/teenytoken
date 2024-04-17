@@ -31,7 +31,7 @@ def merge(ids, pair, idx):
             i += 1
     return newids
 
-class BaseTokenizer:
+class Tokenizer:
     """Base class for tokenizers"""
 
     def __init__(self):
@@ -41,6 +41,18 @@ class BaseTokenizer:
         self.special_tokens = {} # str -> int, e.g. {'<|endoftext|>': 100257}
         self.vocab = self._build_vocab() # int -> bytes
 
+    def train(self, text, vocab_size, verbose=False):
+        # Tokenizer can train a vocabulary of size vocab_size from text
+        raise NotImplementedError
+
+    def encode(self, text):
+        # Tokenizer can encode a string into a list of integers
+        raise NotImplementedError
+
+    def decode(self, ids):
+        # Tokenizer can decode a list of integers into a string
+        raise NotImplementedError
+    
     def _build_vocab(self):
         # vocab is simply and deterministically derived from merges
         vocab = {idx: bytes([idx]) for idx in range(256)}
